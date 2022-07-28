@@ -1,0 +1,22 @@
+name: Build kernel
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+
+      - name: Build
+        run: |
+          source ./config.sh
+          bash ./build_kernel.sh
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: bzImage
+          path: bzImage*
