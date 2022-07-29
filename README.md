@@ -47,7 +47,8 @@ zfsutils-linux 的版本太老了可能会出BUG，可以自行编译。
 ```bash 
 git clone https://github.com/oldshensheep/zfs-on-wsl.git
 cd zfs-on-wsl
-./build-kernel.sh
+source ./config.sh
+./build_kernel.sh
 ./install-mod.sh
 ```
 然后同样的把HOME目录里的bzImage放到Windows的一个地方，更改WSL2的内核…… 参考方法一。
