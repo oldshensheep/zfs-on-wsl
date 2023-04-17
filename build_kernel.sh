@@ -9,11 +9,11 @@ rm -rf ${BUILD_DIR}/kbuild
 mkdir ${BUILD_DIR}/kbuild
 
 
-wget https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-${KERNELVER}.tar.xz -O ${BUILD_DIR}/kbuild/kernel.tar.xz
+wget ${KERNEL_SOURCE_URL} -O ${BUILD_DIR}/kbuild/kernel.tar.xz
 tar -xf ${BUILD_DIR}/kbuild/kernel.tar.xz -C ${BUILD_DIR}/kbuild
 
 # Using Microsoft config-wsl
-wget https://raw.githubusercontent.com/microsoft/WSL2-Linux-Kernel/linux-msft-wsl-5.10.y/Microsoft/config-wsl -O ${BUILD_DIR}/kbuild/linux-${KERNELVER}/.config
+wget https://raw.githubusercontent.com/microsoft/WSL2-Linux-Kernel/${WSL2_Linux_Kernel_BRANCH}/Microsoft/config-wsl -O ${BUILD_DIR}/kbuild/linux-${KERNELVER}/.config
 # Change the kernel name
 sed -i 's/^CONFIG_LOCALVERSION=.*/CONFIG_LOCALVERSION="-${KERNELNAME}"/g' ${BUILD_DIR}/kbuild/linux-${KERNELVER}/.config
 
