@@ -8,16 +8,18 @@ sudo apt install -y dwarves build-essential autoconf automake libtool gawk alien
 rm -rf ${BUILD_DIR}/kbuild
 mkdir ${BUILD_DIR}/kbuild
 
+# download source of kernel
 
-wget ${KERNEL_SOURCE_URL} -O ${BUILD_DIR}/kbuild/kernel.tar.xz
-tar -xf ${BUILD_DIR}/kbuild/kernel.tar.xz -C ${BUILD_DIR}/kbuild
+git clone -branch ${WSL2_Linux_Kernel_BRANCH} -depth 1 --single-branch https://github.com/microsoft/WSL2-Linux-Kernel.git
+mv WSL2-Linux-Kernel ${BUILD_DIR}/kbuild/
 
 # Using Microsoft config-wsl
-wget https://raw.githubusercontent.com/microsoft/WSL2-Linux-Kernel/${WSL2_Linux_Kernel_BRANCH}/Microsoft/config-wsl -O ${BUILD_DIR}/kbuild/linux-${KERNELVER}/.config
-# Change the kernel name
-sed -i 's/^CONFIG_LOCALVERSION=.*/CONFIG_LOCALVERSION="-${KERNELNAME}"/g' ${BUILD_DIR}/kbuild/linux-${KERNELVER}/.config
+cp ${BUILD_DIR}/kbuild/WSL2-Linux-Kernel/Microsoft/config-wsl -O ${BUILD_DIR}/kbuild/WSL2-Linux-Kernel/.config
 
-cd ${BUILD_DIR}/kbuild/linux-${KERNELVER}
+# Change the kernel name
+sed -i 's/^CONFIG_LOCALVERSION=.*/CONFIG_LOCALVERSION="-${KERNELNAME}"/g' ${BUILD_DIR}/kbuild/WSL2-Linux-Kernel/.config
+
+cd ${BUILD_DIR}/kbuild/WSL2-Linux-Kernel
 make olddefconfig
 make prepare
 
@@ -26,20 +28,20 @@ tar -xf ${BUILD_DIR}/kbuild/zfs.tar.gz -C ${BUILD_DIR}/kbuild
 cd ${BUILD_DIR}/kbuild/zfs-${ZFSVER}
 
 ./autogen.sh
-./configure --enable-linux-builtin=yes --with-linux=${BUILD_DIR}/kbuild/linux-${KERNELVER} --with-linux-obj=${BUILD_DIR}/kbuild/linux-${KERNELVER}
-./copy-builtin ${BUILD_DIR}/kbuild/linux-${KERNELVER}
+./configure --enable-linux-builtin=yes --with-linux=${BUILD_DIR}/kbuild/WSL2-Linux-Kernel --with-linux-obj=${BUILD_DIR}/kbuild/WSL2-Linux-Kernel
+./copy-builtin ${BUILD_DIR}/kbuild/WSL2-Linux-Kernel
 
 # Build ZFS!
 make -s -j$(nproc)
 
-cd ${BUILD_DIR}/kbuild/linux-${KERNELVER}
+cd ${BUILD_DIR}/kbuild/WSL2-Linux-Kernel
 
 # Enable ZFS support 
-sed -i '/.*CONFIG_ZFS.*/d' ${BUILD_DIR}/kbuild/linux-${KERNELVER}/.config
-echo "CONFIG_ZFS=y" >> ${BUILD_DIR}/kbuild/linux-${KERNELVER}/.config
+sed -i '/.*CONFIG_ZFS.*/d' ${BUILD_DIR}/kbuild/WSL2-Linux-Kernel/.config
+echo "CONFIG_ZFS=y" >> ${BUILD_DIR}/kbuild/WSL2-Linux-Kernel/.config
 
 # Build kernel!
 make -j$(nproc)
 
-cp -fv ${BUILD_DIR}/kbuild/linux-${KERNELVER}/arch/x86/boot/bzImage ${BUILD_DIR}
+cp -fv ${BUILD_DIR}/kbuild/WSL2-Linux-Kernel/arch/x86/boot/bzImage ${BUILD_DIR}
 mv ${BUILD_DIR}/bzImage ${BUILD_DIR}/bzImage-kernel${KERNELVER}-zfs${ZFSVER}
