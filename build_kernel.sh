@@ -10,7 +10,7 @@ mkdir ${BUILD_DIR}/kbuild
 
 # download source of kernel
 
-git clone -branch ${WSL2_Linux_Kernel_BRANCH} -depth 1 --single-branch https://github.com/microsoft/WSL2-Linux-Kernel.git
+git clone --branch ${WSL2_Linux_Kernel_BRANCH}  --depth 1 --single-branch https://github.com/microsoft/WSL2-Linux-Kernel.git
 mv WSL2-Linux-Kernel ${BUILD_DIR}/kbuild/
 
 # Using Microsoft config-wsl
