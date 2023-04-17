@@ -14,7 +14,7 @@ git clone --branch ${WSL2_Linux_Kernel_BRANCH}  --depth 1 --single-branch https:
 mv WSL2-Linux-Kernel ${BUILD_DIR}/kbuild/
 
 # Using Microsoft config-wsl
-cp ${BUILD_DIR}/kbuild/WSL2-Linux-Kernel/Microsoft/config-wsl -O ${BUILD_DIR}/kbuild/WSL2-Linux-Kernel/.config
+cp ${BUILD_DIR}/kbuild/WSL2-Linux-Kernel/Microsoft/config-wsl ${BUILD_DIR}/kbuild/WSL2-Linux-Kernel/.config
 
 # Change the kernel name
 sed -i 's/^CONFIG_LOCALVERSION=.*/CONFIG_LOCALVERSION="-${KERNELNAME}"/g' ${BUILD_DIR}/kbuild/WSL2-Linux-Kernel/.config
