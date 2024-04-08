@@ -3,14 +3,13 @@ set -xe
 
 source config.sh
 
-
 rm -rf ${BUILD_DIR}/kbuild
 mkdir ${BUILD_DIR}/kbuild
 
 # download source of kernel
 
-git clone --branch ${WSL2_Linux_Kernel_BRANCH}  --depth 1 --single-branch https://github.com/microsoft/WSL2-Linux-Kernel.git
-mv WSL2-Linux-Kernel ${BUILD_DIR}/kbuild/
+git clone --branch ${WSL2_Linux_Kernel_BRANCH} --depth 1 --single-branch \
+https://github.com/microsoft/WSL2-Linux-Kernel.git ${BUILD_DIR}/kbuild/
 
 # Using Microsoft config-wsl
 cp ${BUILD_DIR}/kbuild/WSL2-Linux-Kernel/Microsoft/config-wsl ${BUILD_DIR}/kbuild/WSL2-Linux-Kernel/.config
@@ -35,9 +34,9 @@ make -s -j$(nproc)
 
 cd ${BUILD_DIR}/kbuild/WSL2-Linux-Kernel
 
-# Enable ZFS support 
-sed -i '/.*CONFIG_ZFS.*/d' ${BUILD_DIR}/kbuild/WSL2-Linux-Kernel/.config
-echo "CONFIG_ZFS=y" >> ${BUILD_DIR}/kbuild/WSL2-Linux-Kernel/.config
+# Enable ZFS and ConfigFS support
+sed -i 's/.*CONFIG_ZFS.*/CONFIG_ZFS=y/g' ${BUILD_DIR}/kbuild/WSL2-Linux-Kernel/.config
+sed -i 's/.*CONFIG_CONFIGFS.*/CONFIG_CONFIGFS_FS=y/g' ${BUILD_DIR}/kbuild/WSL2-Linux-Kernel/.config
 
 # Build kernel!
 make -j$(nproc)
