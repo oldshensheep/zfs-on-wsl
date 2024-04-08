@@ -21,7 +21,7 @@ git clone https://github.com/oldshensheep/zfs-on-wsl
 ```
 
 
-编译完成后修改`config.sh`中的`WSL_CONFIG_PATH` 一般只需修改`####`为自己的用户名。  
+编译完成后修改`config.sh`中的`WSL_CONFIG_PATH` 需修改`${username}`为自己的用户名。  
 然后执行脚本替换内核和zfs utils，安装完成后需要重启wsl才能生效。  
 `install_zfs_kernel.sh`会修改wsl的配置文件，所以不用手动修改了。
 
