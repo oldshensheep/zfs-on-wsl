@@ -1,4 +1,5 @@
 #!/bin/bash
+set -xe
 
 source ./config.sh
 
