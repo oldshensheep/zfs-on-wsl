@@ -17,7 +17,13 @@ cp ${BUILD_DIR}/kbuild/WSL2-Linux-Kernel/Microsoft/config-wsl ${BUILD_DIR}/kbuil
 # Change the kernel name
 sed -i 's/^CONFIG_LOCALVERSION=.*/CONFIG_LOCALVERSION="-${KERNELNAME}"/g' ${BUILD_DIR}/kbuild/WSL2-Linux-Kernel/.config
 sed -i 's/.*CONFIG_CONFIGFS_FS.*/CONFIG_CONFIGFS_FS=y/g' ${BUILD_DIR}/kbuild/WSL2-Linux-Kernel/.config
-sed -i 's/.*CONFIG_TARGET_CORE.*/CONFIG_TARGET_CORE=y/g' ${BUILD_DIR}/kbuild/WSL2-Linux-Kernel/.config
+# sed -i 's/.*CONFIG_ISCSI_TARGET.*/CONFIG_ISCSI_TARGET=y/g' ${BUILD_DIR}/kbuild/WSL2-Linux-Kernel/.config
+# sed -i 's/.*CONFIG_ISCSI_TCP.*/CONFIG_ISCSI_TCP=y/g' ${BUILD_DIR}/kbuild/WSL2-Linux-Kernel/.config
+# sed -i 's/.*CONFIG_SCSI_ISCSI_ATTRS.*/CONFIG_SCSI_ISCSI_ATTRS=y/g' ${BUILD_DIR}/kbuild/WSL2-Linux-Kernel/.config
+echo CONFIG_ISCSI_TARGET=y >> ${BUILD_DIR}/kbuild/WSL2-Linux-Kernel/.config
+echo CONFIG_ISCSI_TCP=y >> ${BUILD_DIR}/kbuild/WSL2-Linux-Kernel/.config
+echo CONFIG_SCSI_ISCSI_ATTRS=y >> ${BUILD_DIR}/kbuild/WSL2-Linux-Kernel/.config
+echo CONFIG_TARGET_CORE=y >> ${BUILD_DIR}/kbuild/WSL2-Linux-Kernel/.config
 
 cd ${BUILD_DIR}/kbuild/WSL2-Linux-Kernel
 make olddefconfig
